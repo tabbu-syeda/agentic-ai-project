@@ -1,7 +1,7 @@
 from app.services.llmservice import LLMService
+from app.agents.planner_agent import PlannerAgent
 
+agent = PlannerAgent()
 
-client = LLMService()
- 
-response = client.generate("What is today's date?") 
+response = agent.run("How to make cold coffee?")
 print(response)
