@@ -1,10 +1,7 @@
-from app.services.llmservice import ask_llm
+from app.services.llmservice import LLMService
 
 
-if __name__ == "__main__":
-    response = ask_llm(
-        "Explain AI agents in simple words."
-    )
-
-    print("\n")
-    print(response)
+client = LLMService()
+ 
+response = client.generate("What is today's date?") 
+print(response)

@@ -1,5 +1,6 @@
 import os
 import ollama
+from app.utils.logger import logger
 
 from dotenv import load_dotenv
 
@@ -7,16 +8,29 @@ load_dotenv()
 
 MODEL_NAME = os.getenv("MODEL_NAME")
 
+class LLMService:
 
-def ask_llm(prompt):
-    response = ollama.chat(
-        model=MODEL_NAME,
-        messages=[
-            {
-                "role": "user",
-                "content": prompt
-            }
-        ]
-    )
+    def __init__(self):
 
-    return response["message"]["content"]
+        self.model = os.getenv("MODEL_NAME")
+
+    def generate(self, prompt):
+
+        try:
+            
+            logger.info("Calling local model")
+            response = ollama.chat(
+                model=self.model,
+                messages=[
+                    {
+                        "role": "user",
+                        "content": prompt
+                    }
+                ]
+            )
+
+            return response["message"]["content"]
+
+        except Exception as ex:
+            logger.error(f"LLM Error : {str(ex)}")
+            return None
