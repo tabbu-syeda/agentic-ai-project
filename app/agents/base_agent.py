@@ -8,3 +8,14 @@ class BaseAgent:
 
     def run(self, input):
         raise NotImplementedError("Subclasses must implement this method")
+    
+    def clean_json_response( self,content):
+        content = content.strip()
+
+        if content.startswith("```json"):
+            content = content.replace("```json", "")
+
+        if content.endswith("```"):
+            content = content[:-3]
+
+        return content.strip()

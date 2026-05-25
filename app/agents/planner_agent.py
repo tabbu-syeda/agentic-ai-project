@@ -1,15 +1,45 @@
 from app.agents.base_agent import BaseAgent
-
+from app.models.schemas import TaskList
+import traceback
 
 class PlannerAgent(BaseAgent):
 
     def run(self, goal):
 
         prompt = f"""
-        Break this goal into clear numbered tasks.
+        You are a planning agent.
 
-        Goal:
-        {goal}
+        Break the user goal into tasks.
+
+        Return ONLY valid JSON.
+
+        JSON format:
+
+        {{
+            "goal": {goal},
+            "tasks": [
+                {{
+                    "id": "task_1",
+                    "title": "title",
+                    "description": "description",
+                    "status": "pending",
+                    "planned_tools": [
+                        {{
+                            "tool_name": "name of the tool to call",
+                            "input": "input to the tool"
+                        }}
+                    ]                     
+                }} 
+            ],
+            "reasoning": "why tasks were created"
+        }} 
         """
-
-        return self.llm_service.generate(prompt)
+        
+        try:
+            response = self.llm_service.generate(prompt)
+            cleaned_response = self.clean_json_response(response)
+            validated = TaskList.model_validate_json(cleaned_response)
+            return validated
+        except Exception as ex:
+            traceback.print_exc()
+            return {"error": f"Failed to parse response: {str(ex)}"}
