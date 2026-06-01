@@ -1,7 +1,13 @@
-from app.services.llmservice import LLMService
+from app.services.executor import ExecutorService
 from app.agents.planner_agent import PlannerAgent
 
-agent = PlannerAgent()
 
-response = agent.run("Plan 2 days visit to Goa, India for solo traveller.")
-print(response)
+# response = agent.run("Plan 2 days visit to Goa, India for solo traveller.")
+# print(response)
+
+if __name__ == "__main__":
+    agent = PlannerAgent()
+    user_input = input("Enter your goal: ")
+    execute = ExecutorService()
+    response = execute.execute(user_input, agent)
+    print(response)
