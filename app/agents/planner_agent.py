@@ -1,11 +1,12 @@
+import json
 from app.agents.base_agent import BaseAgent
 from app.models.schemas import TaskList
 import traceback
 
-class PlannerAgent(BaseAgent):
-
+class PlannerAgent(BaseAgent): 
     def run(self, goal):
 
+        goal_json = json.dumps(goal)
         prompt = f"""
         You are a planning agent.
 
@@ -16,7 +17,7 @@ class PlannerAgent(BaseAgent):
         JSON format:
 
         {{
-            "goal": {goal},
+            "goal": {goal_json},
             "tasks": [
                 {{
                     "id": "task_1",
