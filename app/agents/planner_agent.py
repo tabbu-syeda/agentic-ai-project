@@ -5,12 +5,19 @@ import traceback
 
 class PlannerAgent(BaseAgent): 
     def run(self, goal):
-
+        AVAILABLE_TOOLS = [
+            "web_search",
+            "calculator"
+        ]
         goal_json = json.dumps(goal)
         prompt = f"""
         You are a planning agent.
 
         Break the user goal into tasks.
+
+        Only use these exact Available tools names when planning tasks that require tool usage:
+        - web_search
+        - calculator
 
         Return ONLY valid JSON.
 
@@ -29,7 +36,8 @@ class PlannerAgent(BaseAgent):
                             "tool_name": "name of the tool to call",
                             "input": "input to the tool"
                         }}
-                    ]                     
+                    ]  ,
+                    "tool_results" : []                  
                 }} 
             ],
             "reasoning": "why tasks were created"

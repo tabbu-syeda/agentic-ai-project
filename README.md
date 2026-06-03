@@ -72,3 +72,22 @@ Build an **agentic AI system** that accepts user goals, autonomously breaks them
 ```
 
 ---
+
+Planner agent Workflow:
+
+User Goal
+↓
+PlannerAgent
+↓
+TaskList
+↓
+ExecutorAgent
+↓
+├── Exceute llm with tools
+└── Execute LLM without tools
+↓
+ToolResult
+↓
+Updated Tasks
+↓
+Aggregated Result
