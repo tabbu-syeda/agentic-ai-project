@@ -1,16 +1,13 @@
 from app.agents.executor_agent import ExecutorAgent
-from app.services.executor import ExecutorService
+from app.services.taskmanager import TaskExecutionService
 from app.agents.planner_agent import PlannerAgent
 
+ 
 
-# response = agent.run("Plan 2 days visit to Goa, India for solo traveller.")
-# print(response)
-
-if __name__ == "__main__":
+if __name__ == "__main__": 
+    user_input = input("Enter your goal: ") 
     agent = PlannerAgent() 
-    user_input = input("Enter your goal: ")
-    execute = ExecutorService()
-    taks_list = execute.execute(user_input, agent) 
-    executor_agent = ExecutorAgent()
-    response = executor_agent.run(taks_list)
-    print(response)
+    executor_agent = ExecutorAgent() 
+    execute = TaskExecutionService(planner_agent=agent, executor_agent=executor_agent) 
+    response = execute.execute(user_input)
+    print(response) 

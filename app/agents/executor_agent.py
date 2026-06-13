@@ -1,6 +1,8 @@
 from datetime import datetime
 import traceback
 
+from app.Exceptions.llm_exceptions import LLMResponseException
+from app.Exceptions.tools_exception import ToolNotFoundException
 from app.agents.base_agent import BaseAgent
 from app.models.schemas import TaskStatus, ToolResult
 from app.tools.tool_registry import ToolRegistry 
@@ -56,6 +58,7 @@ class ExecutorAgent(BaseAgent):
             print(f"Executing task : {task.title} with tool {tool.tool_name} and input {tool.input}")
 
             tool_func = self.registry.get_tool(tool.tool_name)
+             
 
             if tool_func:
                 result = tool_func.run(tool.input)
@@ -66,14 +69,10 @@ class ExecutorAgent(BaseAgent):
                             result=result,
                             success=True,
                             timestamp = datetime.now()
-                        ) 
-                #print(f"Tool result for {tool.tool_name}: {tool_result.result}")
-                task.tool_results.append(tool_result)
-                #task.status = TaskStatus.COMPLETED
-                #task.result = result
-                #print(f"Tool {tool.tool_name} executed successfully with result: {result}")
+                        )  
+                
+                task.tool_results.append(tool_result) 
             else:
-                print(f"Tool {tool.tool_name} not found in registry.")
                 tool_result = ToolResult(
                     tool_name=tool.tool_name,
                     query=tool.input,
@@ -86,6 +85,8 @@ class ExecutorAgent(BaseAgent):
                 task.status = TaskStatus.BLOCKED
                 task.result = "Tool not found"
                 print(f"Default tool added for {tool.tool_name} for task {task.title}")
+                raise ToolNotFoundException(f"Tool {tool.tool_name} is not registered.");
+               
         
         tool_context = "\n".join( [
             str(t.result)
@@ -127,7 +128,9 @@ class ExecutorAgent(BaseAgent):
             """
 
         output = self.llm_service.generate( prompt)
-
+        if output is None:
+            raise LLMResponseException("LLM failed to generate a response")
+        
         task.result = output
 
         task.status = ( TaskStatus.COMPLETED )

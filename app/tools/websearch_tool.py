@@ -1,4 +1,5 @@
 from app.tools.base_tool import BaseTool
+from ddgs import DDGS
 
 
 class WebSearchTool(BaseTool):
@@ -7,4 +8,10 @@ class WebSearchTool(BaseTool):
 
     def run(self, query: str):
         # Placeholder implementation - replace with actual web search logic
-        return f"Search results for query: {query}"
+        with DDGS() as ddgs:
+
+            results = ddgs.text(
+                query,
+                max_results=5
+            )
+        return f"{results}"
