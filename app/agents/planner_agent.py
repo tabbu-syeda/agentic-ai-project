@@ -31,6 +31,7 @@ class PlannerAgent(BaseAgent):
                     "title": "title",
                     "description": "description",
                     "status": "pending",
+                    "type" : "RESEARCH | CALCULATION | GENERAL",
                     "planned_tools": [
                         {{
                             "tool_name": "name of the tool to call",

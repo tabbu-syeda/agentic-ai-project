@@ -1,7 +1,9 @@
-from pydantic import BaseModel
-from typing import Any, List, Optional
-from enum import Enum
 from datetime import datetime
+from enum import Enum
+from typing import Any, List, Optional
+
+from pydantic import BaseModel
+
 
 class TaskStatus(str, Enum):
     PENDING = "pending"
@@ -9,9 +11,17 @@ class TaskStatus(str, Enum):
     COMPLETED = "completed"
     BLOCKED = "blocked"
 
+
+class TaskType(str, Enum):
+    RESEARCH = "RESEARCH"
+    CALCULATION = "CALCULATION"
+    GENERAL = "GENERAL"
+
+
 class ToolCall(BaseModel):
     tool_name: str
     input: str
+
 
 class ToolResult(BaseModel):
     tool_name: str
@@ -21,11 +31,13 @@ class ToolResult(BaseModel):
     error: Optional[str] = None
     timestamp: datetime
 
+
 class Task(BaseModel):
     id: str
     title: str
     description: str
     status: TaskStatus
+    type: TaskType
     planned_tools: Optional[List[ToolCall]] = None
     tool_results: Optional[List[ToolResult]] = None
     result: Optional[str] = None

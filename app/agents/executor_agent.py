@@ -4,7 +4,7 @@ import traceback
 from app.Exceptions.llm_exceptions import LLMResponseException
 from app.Exceptions.tools_exception import ToolNotFoundException
 from app.agents.base_agent import BaseAgent
-from app.models.schemas import TaskStatus, ToolResult
+from app.models.schemas import  Task, TaskStatus, ToolResult
 from app.tools.tool_registry import ToolRegistry 
 
 
@@ -21,6 +21,7 @@ class ExecutorAgent(BaseAgent):
                 print(
                     f"Executing: {task.title}"
                 ) 
+
                 if task.planned_tools:
                     self.execute_tool(task)                    
                 else:
@@ -134,3 +135,13 @@ class ExecutorAgent(BaseAgent):
         task.result = output
 
         task.status = ( TaskStatus.COMPLETED )
+
+
+    def run_task(self, task: Task) -> Task:
+
+        if task.planned_tools:
+            self.execute_tool(task)
+        else:
+            self.execute_llm_task(task)
+
+        return task

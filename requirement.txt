@@ -4,4 +4,4 @@ streamlit>=1.56.0
 pydantic>=2.0.0 
 ollama>=0.24.0
 python-dotenv>=1.0.0
-duckduckgo-search
+duckduckgo-search (Now officially called as ddgs for package import)
