@@ -8,3 +8,6 @@ class PlannerException(AgentException):
 
 class ExecutorException(AgentException):
     pass
+
+class WriterException(AgentException):
+    pass
