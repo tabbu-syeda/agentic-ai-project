@@ -1,7 +1,6 @@
 from datetime import datetime
 from enum import Enum
 from typing import Any, List, Optional
-
 from pydantic import BaseModel
 
 
@@ -13,6 +12,7 @@ class TaskStatus(str, Enum):
 
 
 class TaskType(str, Enum):
+    WEB_SEARCH = "WEB_SEARCH"
     RESEARCH = "RESEARCH"
     CALCULATION = "CALCULATION"
     GENERAL = "GENERAL"

@@ -19,6 +19,8 @@ class PlannerAgent(BaseAgent):
         - web_search
         - calculator
 
+        Choose only one type per task that is most appropriate
+        
         Return ONLY valid JSON.
 
         JSON format:
@@ -31,7 +33,7 @@ class PlannerAgent(BaseAgent):
                     "title": "title",
                     "description": "description",
                     "status": "pending",
-                    "type" : "RESEARCH | CALCULATION | GENERAL",
+                    "type" : "WEB_SEARCH | RESEARCH | CALCULATION | GENERAL",
                     "planned_tools": [
                         {{
                             "tool_name": "name of the tool to call",
