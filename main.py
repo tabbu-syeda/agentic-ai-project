@@ -1,20 +1,18 @@
-from app.agents.executor_agent import ExecutorAgent
-from app.agents.planner_agent import PlannerAgent
-from app.agents.research_agent import ResearchAgent
-from app.agents.writer_agent import WriterAgent
-from app.services.taskmanager import TaskExecutionService
+from app.factories.agent_factories import AgentFactory
+from app.services.agent_orchestrator import OrchestratorService 
 
 
 if __name__ == "__main__":
     user_input = input("Enter your goal: ")
-    planner_agent = PlannerAgent()
-    executor_agent = ExecutorAgent()
-    research_agent = ResearchAgent()
-    writer_agent = WriterAgent()  
-    execute = TaskExecutionService(
+
+    planner_agent = AgentFactory.create_agent("planner")
+    executor_agent = AgentFactory.create_agent("executor")
+    research_agent = AgentFactory.create_agent("research")
+    writer_agent = AgentFactory.create_agent("writer")
+    orchestrator = OrchestratorService(
         planner_agent=planner_agent,
         executor_agent=executor_agent,
         research_agent=research_agent,
         writer_agent=writer_agent)
-    response = execute.execute(user_input)
+    response = orchestrator.execute(user_input)
     print(response) 
