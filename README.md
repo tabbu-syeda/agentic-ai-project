@@ -1,5 +1,3 @@
-# README.md
-
 # Agentic AI Multi-Agent System
 
 A learning-focused yet scalable **Agentic AI platform** built with Python, local LLMs, FastAPI, and Streamlit.
