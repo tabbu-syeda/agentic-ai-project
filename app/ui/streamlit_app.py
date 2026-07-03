@@ -1,3 +1,5 @@
+import time
+
 from fastapi import logger
 import streamlit as st
 import requests 
@@ -31,17 +33,38 @@ if prompt := st.chat_input("Ask me Anything!"):
 
     
 
-    with st.chat_message("assistant"):
-        with st.spinner("Researching and generating response..."):
-            response = requests.post(
-                "http://localhost:8000/chat",
-                json={"goal": prompt}
-            )
+    # with st.chat_message("assistant"):
+    #     with st.spinner("Researching and generating response..."):
+    #         response = requests.post(
+    #             "http://localhost:8000/chat",
+    #             json={"goal": prompt}
+    #         )
+        
+    #     answer = response.json()["response"]
+    #     st.markdown(answer)
+    
+    with st.status("Processing...", expanded=True) as status:
 
-        answer = response.json()["response"]
-        st.markdown(answer)
-    
-    
+        st.write("Planning tasks...")
+        time.sleep(3)
+
+        st.write("Executing tasks...")
+        time.sleep(5)
+
+        st.write("Generating final response...")
+        
+        response = requests.post(
+            "http://localhost:8000/chat",
+            json={"goal": prompt}
+        )
+
+        status.update(
+            label="Completed!",
+            state="complete"
+        )
+
+    answer = response.json()["response"]
+    st.write(answer)
 
     st.session_state.messages.append(
         {
